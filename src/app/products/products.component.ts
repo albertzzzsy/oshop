@@ -1,7 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, Subscription } from 'rxjs';
-import { CategoryService } from '../category.service';
 import { Product } from '../models/product';
 import { ProductService } from '../product.service';
 
@@ -15,12 +14,10 @@ export class ProductsComponent implements OnDestroy {
   subscription: Subscription = new Subscription;
   filteredProducts: Product[] = [];
   category: any;
-  categories$: any;
-
+  
   constructor(
     route: ActivatedRoute,
-    productService: ProductService, 
-    categoryService: CategoryService) {
+    productService: ProductService) {
 
       this.subscription = productService.getAll().pipe(
         map((actions) => 
@@ -31,7 +28,8 @@ export class ProductsComponent implements OnDestroy {
             return data;
           })
         )
-      ).subscribe((products) => {this.products = products
+      ).subscribe((products) => {
+        this.products = products;
         route.queryParamMap.subscribe(params => {
           this.category = params.get('category');
           
@@ -40,11 +38,6 @@ export class ProductsComponent implements OnDestroy {
             this.products;
         })
       });
-    
-      
-    
-      this.categories$ = categoryService.getAll();
-    
   }
 
   ngOnInit(): void {
