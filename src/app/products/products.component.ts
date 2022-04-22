@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { map, Subscription } from 'rxjs';
 import { CategoryService } from '../category.service';
+import { Product } from '../models/product';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -8,8 +10,10 @@ import { ProductService } from '../product.service';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.sass']
 })
-export class ProductsComponent {
-  products$: any;
+export class ProductsComponent implements OnDestroy {
+  products: Product[] = [];
+  subscription: Subscription = new Subscription;
+  filteredProducts: Product[] = [];
   category: any;
   categories$: any;
 
@@ -17,15 +21,37 @@ export class ProductsComponent {
     route: ActivatedRoute,
     productService: ProductService, 
     categoryService: CategoryService) {
-    this.products$ = productService.getAll();
-    this.categories$ = categoryService.getAll();
+
+      this.subscription = productService.getAll().pipe(
+        map((actions) => 
+          actions.map((action) => {
+            
+            const data = { ...(action.payload.val() as Product)};
+
+            return data;
+          })
+        )
+      ).subscribe((products) => {this.products = products
+        route.queryParamMap.subscribe(params => {
+          this.category = params.get('category');
+          
+          this.filteredProducts = (this.category) ?
+            this.products.filter(p => p.category === this.category) :
+            this.products;
+        })
+      });
     
-    route.queryParamMap.subscribe(params => {
-      this.category = params.get('category')
-    })
+      
+    
+      this.categories$ = categoryService.getAll();
+    
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }
