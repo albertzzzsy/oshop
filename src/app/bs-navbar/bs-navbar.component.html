@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-md navbar-dark bg-danger fixed-top">
     <a class="navbar-brand" routerLink="/">O</a>
     <button 
       class="navbar-toggler" 
@@ -15,7 +15,12 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/shopping-cart">Shopping Cart</a>
+          <a class="nav-link" routerLink="/shopping-cart">
+            Shopping Cart
+            <span class="badge bg-warning text-dark rounded-pill">
+              {{ shoppingCartItemCount }}
+            </span>
+          </a>
         </li>
         <ng-template #anonymousUser>
           <li class="nav-item">
@@ -44,8 +49,4 @@
         </li>
       </ul>
     </div>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-lablel="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
   </nav>
