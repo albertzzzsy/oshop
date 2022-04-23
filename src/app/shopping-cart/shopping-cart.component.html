@@ -1,1 +1,41 @@
-<p>shopping-cart works!</p>
+<h1>Shopping Cart</h1>
+<ng-container>
+  <p>
+    You have {{shoppingCartItemCount}} items in your shopping cart.
+  </p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Total Price</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let c of cartsProduct; let i = index">
+      <tr *ngIf="i%5===0">
+        <td>
+          <img [src]="cartsProduct[i]" class="thumbnail">
+        </td>
+        <td>{{ cartsProduct[i+1] }}</td>
+        <td>
+          <!-- <button (click)="removeFromCart()">-</button> -->
+          {{ cartsProduct[i+2] }}
+          <!-- <button (click)="addToCart()">+</button> -->
+        </td>
+        <td>{{ cartsProduct[i+3] | currency:'USD' }} </td>
+        <td>{{ cartsProduct[i+4] | currency:'USD' }}</td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <th>Summme</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>{{ endTotalPrice | currency:'USD' }}</th>
+      </tr>
+    </tbody>
+  </table>
+  <button (click)="clearCart()" class="btn btn-danger btn-sm">Clear Shopping Cart</button>
+</ng-container>

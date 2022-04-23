@@ -27,7 +27,7 @@
     [resizable]="true"
   >
     <ng-template #dataTableCell let-item="item">
-      {{ item.price | currency: 'USD': true}}
+      {{ item.price | currency: 'USD'}}
     </ng-template>
   </data-table-column>
   <data-table-column
@@ -51,7 +51,7 @@
   <tbody>
     <tr *ngFor="let p of products$ | async">
       <td>{{ p.payload.val().title }}</td>
-      <td>{{ p.payload.val().price }}</td>
+      <td>{{ p.payload.val().price | currency:'USD' }}</td>
       <td>
         <a [routerLink]="p.key">Edit</a>
       </td>

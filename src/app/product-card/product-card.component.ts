@@ -19,12 +19,14 @@ export class ProductCardComponent implements OnInit {
   }
 
   removeFromCart() {
-    this.shoppingcartService.removeFromCart(this.product);
+    this.shoppingcartService.removeFromCart(this.product)
   }
 
   getQuantity() {
     if (!this.shoppingCart) return 0;
+    
     let item = this.shoppingCart.items[this.product.title];
+    console.log(item)
     return item ? item.quantity: 0
   }
 
