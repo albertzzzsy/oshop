@@ -31,6 +31,7 @@ import { CategoryService } from './category.service';
 import { ProductService } from './product.service';
 import { ProductFilterComponent } from './products/product-filter/product-filter.component';
 import { ProductCardComponent } from './product-card/product-card.component';
+import { ShoppingCartService } from './shopping-cart.service';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { ProductCardComponent } from './product-card/product-card.component';
     CategoryService,
     ProductService,
     AdminAuthGuardService,
+    ShoppingCartService,
   ],
   bootstrap: [AppComponent]
 })

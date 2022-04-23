@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map, Subscription } from 'rxjs';
 import { Product } from '../models/product';
 import { ProductService } from '../product.service';
+import { ShoppingCartService } from '../shopping-cart.service';
 
 @Component({
   selector: 'app-products',
@@ -14,10 +15,13 @@ export class ProductsComponent implements OnDestroy {
   subscription: Subscription = new Subscription;
   filteredProducts: Product[] = [];
   category: any;
+  cart: any;
   
   constructor(
     route: ActivatedRoute,
-    productService: ProductService) {
+    productService: ProductService,
+    private shoppingCartService: ShoppingCartService
+    ) {
 
       this.subscription = productService.getAll().pipe(
         map((actions) => 
@@ -40,7 +44,13 @@ export class ProductsComponent implements OnDestroy {
       });
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.subscription = 
+      (await this.shoppingCartService.getCart())
+        .snapshotChanges()
+        .subscribe(
+          cart => this.cart = cart.payload.val()
+        )
   }
 
   ngOnDestroy(): void {
