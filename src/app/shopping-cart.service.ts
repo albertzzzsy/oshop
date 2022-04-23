@@ -42,4 +42,17 @@ export class ShoppingCartService {
         });
       })
   }
+
+  async removeFromCart(product: Product) {
+    let cartId = await this.getOrCreateCartId();
+    let item$ = this.db.object('/shopping-carts/' + cartId + '/items/' + product.title);
+    item$.snapshotChanges().pipe((take(1)))
+      .subscribe((item: any) => {
+        if(item$) item$.update({
+          product: product,
+          quantity:
+            (item.payload.exists() ? item.payload.val()['quantity'] : 1) - 1,
+        });
+      })
+  }
 }
