@@ -69,4 +69,11 @@ export class ShoppingCartService {
         });
       })
   }
+
+  async clearCart() {
+    console.log('clear')
+    let cartId = await this.getOrCreateCartId();
+    console.log(cartId)
+    this.db.object('/shopping-carts/' + cartId + '/items').remove();
+  }
 }
