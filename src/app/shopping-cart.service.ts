@@ -44,7 +44,10 @@ export class ShoppingCartService {
     item$.snapshotChanges().pipe((take(1)))
       .subscribe((item: any) => {
         if(item$) item$.update({
-          product: product,
+          // product: product,
+          title: product.title,
+          imageUrl: product.imageUrl,
+          price: product.price,
           quantity:
             (item.payload.exists() ? item.payload.val()['quantity'] : 0) + 1,
         });
@@ -57,7 +60,10 @@ export class ShoppingCartService {
     item$.snapshotChanges().pipe((take(1)))
       .subscribe((item: any) => {
         if(item$) item$.update({
-          product: product,
+          // product: product,
+          title: product.title,
+          imageUrl: product.imageUrl,
+          price: product.price,
           quantity:
             (item.payload.exists() ? item.payload.val()['quantity'] : 1) - 1,
         });
