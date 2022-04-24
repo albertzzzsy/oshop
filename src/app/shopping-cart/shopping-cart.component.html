@@ -17,7 +17,7 @@
           {{ item.product.title }}
         </td>
         <td>
-          {{ item.quantity }}
+          <app-product-quantity [product]="item.product" [shopping-cart]="cart"></app-product-quantity>
         </td>
         <td>
           {{ item.totalPrice | currency:'USD' }}
