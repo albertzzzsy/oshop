@@ -43,14 +43,18 @@ export class ShoppingCartService {
     let item$ = this.db.object('/shopping-carts/' + cartId + '/items/' + product.title);
     item$.snapshotChanges().pipe((take(1)))
       .subscribe((item: any) => {
-        if(item$) item$.update({
-          // product: product,
-          title: product.title,
-          imageUrl: product.imageUrl,
-          price: product.price,
-          quantity:
-            (item.payload.exists() ? item.payload.val()['quantity'] : 0) + 1,
-        });
+        let quantity = (item.payload.exists() ? item.payload.val()['quantity'] : 0) + 1;
+        if (quantity === 0) {
+          item$.remove();
+        } else {
+          if(item$) item$.update({
+            // product: product,
+            title: product.title,
+            imageUrl: product.imageUrl,
+            price: product.price,
+            quantity: quantity,
+          });
+        }
       })
   }
 
@@ -59,14 +63,18 @@ export class ShoppingCartService {
     let item$ = this.db.object('/shopping-carts/' + cartId + '/items/' + product.title);
     item$.snapshotChanges().pipe((take(1)))
       .subscribe((item: any) => {
-        if(item$) item$.update({
-          // product: product,
-          title: product.title,
-          imageUrl: product.imageUrl,
-          price: product.price,
-          quantity:
-            (item.payload.exists() ? item.payload.val()['quantity'] : 1) - 1,
-        });
+        let quantity = (item.payload.exists() ? item.payload.val()['quantity'] : 1) - 1;
+        if (quantity === 0) {
+          item$.remove();
+        } else {
+          if(item$) item$.update({
+            // product: product,
+            title: product.title,
+            imageUrl: product.imageUrl,
+            price: product.price,
+            quantity: quantity,
+          });
+        }
       })
   }
 
