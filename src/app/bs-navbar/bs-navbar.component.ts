@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { AppUser } from '../models/app-user';
+import { ShoppingCart } from '../models/shoppint-cart';
 import { ShoppingCartService } from '../shopping-cart.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { ShoppingCartService } from '../shopping-cart.service';
 })
 export class BsNavbarComponent implements OnInit {
   appUser: AppUser | undefined;
-  shoppingCartItemCount!: number;
+  cart$: Observable<ShoppingCart> | undefined;
 
   constructor(private auth: AuthService, private shoppingCartService: ShoppingCartService) {
 
@@ -20,7 +21,7 @@ export class BsNavbarComponent implements OnInit {
   async ngOnInit() {
     this.auth.appUser$.subscribe(appUser => this.appUser = appUser);
 
-    let cart$ = await this.shoppingCartService.getCart();
+    this.cart$ = await this.shoppingCartService.getCart();
     // cart$.snapshotChanges().pipe(
     //   map((x:any) => {
     //     const items = x.payload.val().items;
@@ -33,18 +34,17 @@ export class BsNavbarComponent implements OnInit {
     //     this.shoppingCartItemCount += cart[productId].quantity;
     //   }
     // })
-    cart$.snapshotChanges().pipe(
-      map((x:any) => {
-        const items = x.payload.val();
-        console.log(items)
-        return items;
-      })
-    ).subscribe(cart => {
-      this.shoppingCartItemCount = 0;
-      for (let productId in cart.items) {
-        this.shoppingCartItemCount += cart.items[productId].quantity;
-      }
-    })
+    // cart$.snapshotChanges().pipe(
+    //   map((x:any) => {
+    //     const items = x.payload.val();
+    //     console.log(items)
+    //     return items;
+    //   })
+    // ).subscribe(cart => {
+    //   let count = this.shoppingCartService.getTotalItemCount(cart);
+
+      
+    // })
   }
 
   logout() {

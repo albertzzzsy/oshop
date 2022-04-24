@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-danger fixed-top">
-    <a class="navbar-brand" routerLink="/">O</a>
+    <a class="navbar-brand" routerLink="/">O-shop</a>
     <button 
       class="navbar-toggler" 
       type="button" 
@@ -17,8 +17,8 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/shopping-cart">
             Shopping Cart
-            <span class="badge bg-warning text-dark rounded-pill">
-              {{ shoppingCartItemCount }}
+            <span *ngIf="cart$ | async as cart" class="badge bg-warning text-dark rounded-pill">
+              {{ cart.totalItemsCount }}
             </span>
           </a>
         </li>

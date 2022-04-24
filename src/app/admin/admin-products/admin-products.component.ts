@@ -12,10 +12,6 @@ export class AdminProductsComponent implements OnInit {
 
   constructor(private productService: ProductService) { 
     this.products$ = this.productService.getAll();
-    const observer = {
-      next: (x: any) => console.log(x),
-    }
-    console.log(this.products$.subscribe(observer));
   }
   
   // private initializeTable(products: any[]) {

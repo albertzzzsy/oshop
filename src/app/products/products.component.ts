@@ -26,9 +26,7 @@ export class ProductsComponent implements OnDestroy {
       this.subscription = productService.getAll().pipe(
         map((actions) => 
           actions.map((action) => {
-            
-            const data = { ...(action.payload.val() as Product)};
-
+            const data = { ...( action.payload.val() as Product)};
             return data;
           })
         )
@@ -47,9 +45,9 @@ export class ProductsComponent implements OnDestroy {
   async ngOnInit() {
     this.subscription = 
       (await this.shoppingCartService.getCart())
-        .snapshotChanges()
+
         .subscribe(
-          cart => this.cart = cart.payload.val()
+          cart => this.cart = cart
         )
   }
 
