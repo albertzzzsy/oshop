@@ -9,7 +9,7 @@ import { UserService } from './user.service';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'firebase-demo';
+  title = 'o-shop';
   constructor(private userService: UserService, private auth: AuthService, router: Router) {
     auth.user$.subscribe(user => {
       if(user) {

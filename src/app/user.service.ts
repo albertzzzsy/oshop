@@ -12,6 +12,7 @@ export class UserService {
 
   }
   
+  // store user info in firebase
   save(user: firebase.User){
     this.db.object('/users/' + user.uid).update({
       name: user.displayName,
@@ -19,6 +20,7 @@ export class UserService {
     })
   }
 
+  // Fetch user info from firebase
   get(uid: string): AngularFireObject<AppUser> {
     return this.db.object('/users/' + uid);
   }
