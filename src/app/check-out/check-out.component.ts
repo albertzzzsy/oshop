@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../auth.service';
+import { Order } from '../models/order';
 import { ShoppingCart } from '../models/shoppint-cart';
 import { OrderService } from '../order.service';
 import { ShoppingCartService } from '../shopping-cart.service';
@@ -10,38 +12,40 @@ import { ShoppingCartService } from '../shopping-cart.service';
   styleUrls: ['./check-out.component.sass']
 })
 export class CheckOutComponent implements OnInit, OnDestroy {
-  shopping = {};
+  shipping = {
+    name: '',
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+  };
+  userId!: string;
   cart!: ShoppingCart;
-  subscription!: Subscription;
+  cartSubscription!: Subscription;
+  userSubscription!: Subscription;
 
-  constructor(private shoppingCartSerive: ShoppingCartService, private orderService: OrderService) { }
+  constructor(
+    private shoppingCartSerive: ShoppingCartService, 
+    private orderService: OrderService,
+    private authService: AuthService
+    ) { }
   
   ngOnDestroy() {
-    return this.subscription.unsubscribe();
+    return this.cartSubscription.unsubscribe();
+    return this.userSubscription.unsubscribe();
   }
 
   async ngOnInit() {
     let cart$ = await this.shoppingCartSerive.getCart();
-    cart$.subscribe(cart => this.cart = cart);
+    this.cartSubscription = cart$.subscribe(cart => this.cart = cart);
+    this.authService.user$.subscribe(user => {
+      if (user != null) {
+        this.userId = user.uid
+      }
+    })
   }
 
   placeOrder() {
-    let order = {
-      datePlaced: new Date().getTime(),
-      shipping: this.shopping,
-      items: this.cart.items.map(i => {
-        return {
-          products: {
-            title: i.title,
-            imageUrl: i.imageUrl, 
-            price: i.price,
-          },
-          quantity: i.quantity,
-          totalPrice: i.totalPrice,
-        }
-      })
-    };
-
+    let order = new Order(this.userId, this.shipping, this.cart);
     this.orderService.storeOrder(order);
   }
 

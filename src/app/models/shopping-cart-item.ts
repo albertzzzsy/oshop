@@ -1,7 +1,7 @@
 import { Product } from "./product";
 
 export class ShoppingCartItem {
-  $key!: string;
+  key!: string;
   title!: string;
   imageUrl!: string;
   price!: number;
